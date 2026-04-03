@@ -15,6 +15,7 @@ const routesEmprunts = require("./routes/routesEmprunts");
 const app = express();
 const PORT = configuration.port;
 
+// Configuration de base d'Express
 app.use(cors());
 app.use(express.json());
 
@@ -54,6 +55,7 @@ app.use((req, res) => {
 });
 
 async function initialiserRolesEtAdmin() {
+  // On s'assure que les deux roles principaux existent toujours.
   const [roleAdmin] = await Role.findOrCreate({
     where: { nom: "admin" },
     defaults: {
@@ -75,6 +77,8 @@ async function initialiserRolesEtAdmin() {
     return;
   }
 
+  // Si un email et un mot de passe admin sont donnes dans .env,
+  // on cree l'admin une seule fois au demarrage.
   const adminExistant = await Utilisateur.findOne({
     where: { email: emailAdmin },
   });

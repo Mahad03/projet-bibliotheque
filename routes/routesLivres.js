@@ -7,8 +7,11 @@ const { validerLivre } = require("../validations/validationLivre");
 
 const routeur = express.Router();
 
+// Lecture publique
 routeur.get("/", livreControleur.listerLivres);
 routeur.get("/:id", livreControleur.obtenirLivre);
+
+// Ecriture reservee a l'admin
 routeur.post(
   "/",
   authentification,
