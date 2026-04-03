@@ -5,7 +5,9 @@
   "main": "serveur.js",
   "scripts": {
     "start": "node serveur.js",
-    "dev": "nodemon serveur.js"
+    "dev": "nodemon serveur.js",
+    "verifier:api": "node scripts/tester-api-bibliotheque.js",
+    "mettre-a-jour:soumission": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/mettre-a-jour-soumission.ps1"
   },
   "keywords": [
     "express",
