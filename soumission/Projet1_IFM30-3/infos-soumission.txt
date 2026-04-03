@@ -1,4 +1,4 @@
-﻿Projet 1 - IFM30 - 3
+Projet 1 - IFM30-3
 
 1) Contenu du fichier zip
 - projet sans le dossier node_modules
@@ -7,10 +7,10 @@
 - fichier Postman
 
 2) Noms des membres du groupe
-- A completer
+- Mahad03
 
 3) Tables developpees par chacun des membres
-- A completer
+- Mahad03 : roles, utilisateurs, auteurs, categories, livres, emprunts
 
 4) Lien GitHub
-- A completer
+- https://github.com/Mahad03/projet-bibliotheque
