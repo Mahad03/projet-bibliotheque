@@ -8,8 +8,8 @@ if (Test-Path $dossierSoumission) {
 }
 New-Item $dossierSoumission -ItemType Directory | Out-Null
 
-# Copier le projet sans node_modules, .git, soumission, quiz-builder-react, .env
-$exclusions = @("node_modules", ".git", "soumission", "quiz-builder-react", ".env", "output")
+# Copier le projet sans dossiers/fichiers techniques ou prives
+$exclusions = @("node_modules", ".git", "soumission", "quiz-builder-react", ".env", "output", ".codex", ".playwright-cli")
 Get-ChildItem $racine | Where-Object { $exclusions -notcontains $_.Name } | ForEach-Object {
     Copy-Item $_.FullName -Destination $dossierSoumission -Recurse -Force
 }
