@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Modele physique</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 32px;
+        color: #111827;
+      }
+
+      h1,
+      p {
+        text-align: center;
+      }
+
+      pre {
+        margin-top: 24px;
+        padding: 20px;
+        background: #f3f4f6;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        white-space: pre-wrap;
+        font-size: 13px;
+        line-height: 1.5;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Projet 1 - Modele physique</h1>
+    <p>Equipe : IFM30 - 3</p>
+
+    <pre>CREATE TABLE roles (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(255) NOT NULL UNIQUE,
+    description VARCHAR(255),
+    createdAt DATETIME NOT NULL,
+    updatedAt DATETIME NOT NULL
+);
+
+CREATE TABLE utilisateurs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nomComplet VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    motDePasse VARCHAR(255) NOT NULL,
+    actif BOOLEAN NOT NULL DEFAULT TRUE,
+    roleId INT NOT NULL,
+    createdAt DATETIME NOT NULL,
+    updatedAt DATETIME NOT NULL,
+    FOREIGN KEY (roleId) REFERENCES roles(id)
+);
+
+CREATE TABLE auteurs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(255) NOT NULL,
+    prenom VARCHAR(255),
+    biographie TEXT,
+    createdAt DATETIME NOT NULL,
+    updatedAt DATETIME NOT NULL
+);
+
+CREATE TABLE categories (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(255) NOT NULL UNIQUE,
+    description VARCHAR(255),
+    createdAt DATETIME NOT NULL,
+    updatedAt DATETIME NOT NULL
+);
+
+CREATE TABLE livres (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    titre VARCHAR(255) NOT NULL,
+    resume TEXT,
+    anneePublication INT,
+    isbn VARCHAR(255) NOT NULL UNIQUE,
+    quantiteTotale INT NOT NULL DEFAULT 1,
+    quantiteDisponible INT NOT NULL DEFAULT 1,
+    auteurId INT NOT NULL,
+    categorieId INT NOT NULL,
+    createdAt DATETIME NOT NULL,
+    updatedAt DATETIME NOT NULL,
+    FOREIGN KEY (auteurId) REFERENCES auteurs(id),
+    FOREIGN KEY (categorieId) REFERENCES categories(id)
+);
+
+CREATE TABLE emprunts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    dateEmprunt DATE NOT NULL,
+    dateRetourPrevue DATE NOT NULL,
+    dateRetourEffective DATE,
+    statut ENUM('en_cours', 'retourne') NOT NULL DEFAULT 'en_cours',
+    utilisateurId INT NOT NULL,
+    livreId INT NOT NULL,
+    createdAt DATETIME NOT NULL,
+    updatedAt DATETIME NOT NULL,
+    FOREIGN KEY (utilisateurId) REFERENCES utilisateurs(id),
+    FOREIGN KEY (livreId) REFERENCES livres(id)
+);</pre>
+  </body>
+  </html>

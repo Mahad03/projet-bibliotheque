@@ -1,0 +1,16 @@
+﻿Projet 1 - IFM30 - 3
+
+1) Contenu du fichier zip
+- projet sans le dossier node_modules
+- schema du modele entite-association en PDF
+- schema du modele physique en PDF
+- fichier Postman
+
+2) Noms des membres du groupe
+- A completer
+
+3) Tables developpees par chacun des membres
+- A completer
+
+4) Lien GitHub
+- A completer

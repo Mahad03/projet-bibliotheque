@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Modele entite-association</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 24px;
+        color: #111827;
+      }
+
+      h1,
+      p {
+        text-align: center;
+      }
+
+      .diagramme {
+        margin-top: 32px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Projet 1 - Modele entite-association</h1>
+    <p>Equipe : IFM30 - 3</p>
+
+    <div class="diagramme mermaid">
+      erDiagram
+      ROLE ||--o{ UTILISATEUR : possede
+      UTILISATEUR ||--o{ EMPRUNT : effectue
+      AUTEUR ||--o{ LIVRE : ecrit
+      CATEGORIE ||--o{ LIVRE : classe
+      LIVRE ||--o{ EMPRUNT : concerne
+
+      ROLE {
+        int id PK
+        string nom
+        string description
+      }
+
+      UTILISATEUR {
+        int id PK
+        string nomComplet
+        string email
+        string motDePasse
+        boolean actif
+        int roleId FK
+      }
+
+      AUTEUR {
+        int id PK
+        string nom
+        string prenom
+        text biographie
+      }
+
+      CATEGORIE {
+        int id PK
+        string nom
+        string description
+      }
+
+      LIVRE {
+        int id PK
+        string titre
+        text resume
+        int anneePublication
+        string isbn
+        int quantiteTotale
+        int quantiteDisponible
+        int auteurId FK
+        int categorieId FK
+      }
+
+      EMPRUNT {
+        int id PK
+        date dateEmprunt
+        date dateRetourPrevue
+        date dateRetourEffective
+        string statut
+        int utilisateurId FK
+        int livreId FK
+      }
+    </div>
+
+    <script>
+      mermaid.initialize({ startOnLoad: true, theme: "default" });
+    </script>
+  </body>
+  </html>
