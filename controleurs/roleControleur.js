@@ -26,7 +26,6 @@ async function listerRoles(req, res) {
   } catch (error) {
     return res.status(500).json({
       message: "Erreur pendant la recuperation des roles.",
-      erreur: error.message,
     });
   }
 }
@@ -45,14 +44,19 @@ async function obtenirRole(req, res) {
   } catch (error) {
     return res.status(500).json({
       message: "Erreur pendant la recuperation du role.",
-      erreur: error.message,
     });
   }
 }
 
 async function creerRole(req, res) {
   try {
-    const role = await Role.create(req.body);
+    const nom = req.body.nom;
+    const description = req.body.description || null;
+
+    const role = await Role.create({
+      nom,
+      description,
+    });
 
     return res.status(201).json({
       message: "Role cree avec succes.",
@@ -61,7 +65,6 @@ async function creerRole(req, res) {
   } catch (error) {
     return res.status(500).json({
       message: "Erreur pendant la creation du role.",
-      erreur: error.message,
     });
   }
 }
@@ -76,7 +79,17 @@ async function modifierRole(req, res) {
       });
     }
 
-    await role.update(req.body);
+    const donneesRole = {};
+
+    if (req.body.nom !== undefined) {
+      donneesRole.nom = req.body.nom;
+    }
+
+    if (req.body.description !== undefined) {
+      donneesRole.description = req.body.description;
+    }
+
+    await role.update(donneesRole);
 
     return res.json({
       message: "Role modifie avec succes.",
@@ -85,7 +98,6 @@ async function modifierRole(req, res) {
   } catch (error) {
     return res.status(500).json({
       message: "Erreur pendant la modification du role.",
-      erreur: error.message,
     });
   }
 }
@@ -108,7 +120,6 @@ async function supprimerRole(req, res) {
   } catch (error) {
     return res.status(500).json({
       message: "Erreur pendant la suppression du role.",
-      erreur: error.message,
     });
   }
 }

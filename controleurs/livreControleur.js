@@ -55,7 +55,6 @@ async function listerLivres(req, res) {
   } catch (error) {
     return res.status(500).json({
       message: "Erreur pendant la recuperation des livres.",
-      erreur: error.message,
     });
   }
 }
@@ -87,15 +86,21 @@ async function obtenirLivre(req, res) {
   } catch (error) {
     return res.status(500).json({
       message: "Erreur pendant la recuperation du livre.",
-      erreur: error.message,
     });
   }
 }
 
 async function creerLivre(req, res) {
   try {
-    const auteur = await Auteur.findByPk(req.body.auteurId);
-    const categorie = await Categorie.findByPk(req.body.categorieId);
+    const titre = req.body.titre;
+    const resume = req.body.resume || null;
+    const anneePublication = req.body.anneePublication || null;
+    const isbn = req.body.isbn;
+    const auteurId = req.body.auteurId;
+    const categorieId = req.body.categorieId;
+
+    const auteur = await Auteur.findByPk(auteurId);
+    const categorie = await Categorie.findByPk(categorieId);
 
     if (!auteur || !categorie) {
       return res.status(404).json({
@@ -116,7 +121,12 @@ async function creerLivre(req, res) {
     }
 
     const livre = await Livre.create({
-      ...req.body,
+      titre,
+      resume,
+      anneePublication,
+      isbn,
+      auteurId,
+      categorieId,
       quantiteTotale,
       quantiteDisponible,
     });
@@ -128,7 +138,6 @@ async function creerLivre(req, res) {
   } catch (error) {
     return res.status(500).json({
       message: "Erreur pendant la creation du livre.",
-      erreur: error.message,
     });
   }
 }
@@ -177,11 +186,36 @@ async function modifierLivre(req, res) {
       });
     }
 
-    await livre.update({
-      ...req.body,
-      quantiteTotale,
-      quantiteDisponible,
-    });
+    const donneesLivre = {};
+
+    if (req.body.titre !== undefined) {
+      donneesLivre.titre = req.body.titre;
+    }
+
+    if (req.body.resume !== undefined) {
+      donneesLivre.resume = req.body.resume;
+    }
+
+    if (req.body.anneePublication !== undefined) {
+      donneesLivre.anneePublication = req.body.anneePublication;
+    }
+
+    if (req.body.isbn !== undefined) {
+      donneesLivre.isbn = req.body.isbn;
+    }
+
+    if (req.body.auteurId !== undefined) {
+      donneesLivre.auteurId = req.body.auteurId;
+    }
+
+    if (req.body.categorieId !== undefined) {
+      donneesLivre.categorieId = req.body.categorieId;
+    }
+
+    donneesLivre.quantiteTotale = quantiteTotale;
+    donneesLivre.quantiteDisponible = quantiteDisponible;
+
+    await livre.update(donneesLivre);
 
     return res.json({
       message: "Livre modifie avec succes.",
@@ -190,7 +224,6 @@ async function modifierLivre(req, res) {
   } catch (error) {
     return res.status(500).json({
       message: "Erreur pendant la modification du livre.",
-      erreur: error.message,
     });
   }
 }
@@ -213,7 +246,6 @@ async function supprimerLivre(req, res) {
   } catch (error) {
     return res.status(500).json({
       message: "Erreur pendant la suppression du livre.",
-      erreur: error.message,
     });
   }
 }

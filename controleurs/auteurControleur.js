@@ -29,7 +29,6 @@ async function listerAuteurs(req, res) {
   } catch (error) {
     return res.status(500).json({
       message: "Erreur pendant la recuperation des auteurs.",
-      erreur: error.message,
     });
   }
 }
@@ -55,14 +54,21 @@ async function obtenirAuteur(req, res) {
   } catch (error) {
     return res.status(500).json({
       message: "Erreur pendant la recuperation de l'auteur.",
-      erreur: error.message,
     });
   }
 }
 
 async function creerAuteur(req, res) {
   try {
-    const auteur = await Auteur.create(req.body);
+    const nom = req.body.nom;
+    const prenom = req.body.prenom || null;
+    const biographie = req.body.biographie || null;
+
+    const auteur = await Auteur.create({
+      nom,
+      prenom,
+      biographie,
+    });
 
     return res.status(201).json({
       message: "Auteur cree avec succes.",
@@ -71,7 +77,6 @@ async function creerAuteur(req, res) {
   } catch (error) {
     return res.status(500).json({
       message: "Erreur pendant la creation de l'auteur.",
-      erreur: error.message,
     });
   }
 }
@@ -86,7 +91,21 @@ async function modifierAuteur(req, res) {
       });
     }
 
-    await auteur.update(req.body);
+    const donneesAuteur = {};
+
+    if (req.body.nom !== undefined) {
+      donneesAuteur.nom = req.body.nom;
+    }
+
+    if (req.body.prenom !== undefined) {
+      donneesAuteur.prenom = req.body.prenom;
+    }
+
+    if (req.body.biographie !== undefined) {
+      donneesAuteur.biographie = req.body.biographie;
+    }
+
+    await auteur.update(donneesAuteur);
 
     return res.json({
       message: "Auteur modifie avec succes.",
@@ -95,7 +114,6 @@ async function modifierAuteur(req, res) {
   } catch (error) {
     return res.status(500).json({
       message: "Erreur pendant la modification de l'auteur.",
-      erreur: error.message,
     });
   }
 }
@@ -118,7 +136,6 @@ async function supprimerAuteur(req, res) {
   } catch (error) {
     return res.status(500).json({
       message: "Erreur pendant la suppression de l'auteur.",
-      erreur: error.message,
     });
   }
 }

@@ -43,7 +43,6 @@ async function listerUtilisateurs(req, res) {
   } catch (error) {
     return res.status(500).json({
       message: "Erreur pendant la recuperation des utilisateurs.",
-      erreur: error.message,
     });
   }
 }
@@ -71,7 +70,6 @@ async function obtenirUtilisateur(req, res) {
   } catch (error) {
     return res.status(500).json({
       message: "Erreur pendant la recuperation de l'utilisateur.",
-      erreur: error.message,
     });
   }
 }
@@ -86,7 +84,27 @@ async function modifierUtilisateur(req, res) {
       });
     }
 
-    const donnees = { ...req.body };
+    const donnees = {};
+
+    if (req.body.nomComplet !== undefined) {
+      donnees.nomComplet = req.body.nomComplet;
+    }
+
+    if (req.body.email !== undefined) {
+      donnees.email = req.body.email;
+    }
+
+    if (req.body.actif !== undefined) {
+      donnees.actif = req.body.actif;
+    }
+
+    if (req.body.roleId !== undefined) {
+      donnees.roleId = req.body.roleId;
+    }
+
+    if (req.body.motDePasse !== undefined) {
+      donnees.motDePasse = req.body.motDePasse;
+    }
 
     if (donnees.motDePasse) {
       donnees.motDePasse = await bcrypt.hash(donnees.motDePasse, 10);
@@ -122,7 +140,6 @@ async function modifierUtilisateur(req, res) {
   } catch (error) {
     return res.status(500).json({
       message: "Erreur pendant la modification de l'utilisateur.",
-      erreur: error.message,
     });
   }
 }
@@ -145,7 +162,6 @@ async function supprimerUtilisateur(req, res) {
   } catch (error) {
     return res.status(500).json({
       message: "Erreur pendant la suppression de l'utilisateur.",
-      erreur: error.message,
     });
   }
 }

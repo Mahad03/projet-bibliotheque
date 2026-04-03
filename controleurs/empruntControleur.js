@@ -56,7 +56,6 @@ async function creerEmprunt(req, res) {
   } catch (error) {
     return res.status(500).json({
       message: "Erreur pendant la creation de l'emprunt.",
-      erreur: error.message,
     });
   }
 }
@@ -95,7 +94,6 @@ async function listerMesEmprunts(req, res) {
   } catch (error) {
     return res.status(500).json({
       message: "Erreur pendant la recuperation de vos emprunts.",
-      erreur: error.message,
     });
   }
 }
@@ -148,7 +146,6 @@ async function listerEmprunts(req, res) {
   } catch (error) {
     return res.status(500).json({
       message: "Erreur pendant la recuperation des emprunts.",
-      erreur: error.message,
     });
   }
 }
@@ -203,7 +200,6 @@ async function retournerEmprunt(req, res) {
   } catch (error) {
     return res.status(500).json({
       message: "Erreur pendant le retour du livre.",
-      erreur: error.message,
     });
   }
 }

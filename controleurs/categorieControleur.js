@@ -29,7 +29,6 @@ async function listerCategories(req, res) {
   } catch (error) {
     return res.status(500).json({
       message: "Erreur pendant la recuperation des categories.",
-      erreur: error.message,
     });
   }
 }
@@ -55,14 +54,19 @@ async function obtenirCategorie(req, res) {
   } catch (error) {
     return res.status(500).json({
       message: "Erreur pendant la recuperation de la categorie.",
-      erreur: error.message,
     });
   }
 }
 
 async function creerCategorie(req, res) {
   try {
-    const categorie = await Categorie.create(req.body);
+    const nom = req.body.nom;
+    const description = req.body.description || null;
+
+    const categorie = await Categorie.create({
+      nom,
+      description,
+    });
 
     return res.status(201).json({
       message: "Categorie creee avec succes.",
@@ -71,7 +75,6 @@ async function creerCategorie(req, res) {
   } catch (error) {
     return res.status(500).json({
       message: "Erreur pendant la creation de la categorie.",
-      erreur: error.message,
     });
   }
 }
@@ -86,7 +89,17 @@ async function modifierCategorie(req, res) {
       });
     }
 
-    await categorie.update(req.body);
+    const donneesCategorie = {};
+
+    if (req.body.nom !== undefined) {
+      donneesCategorie.nom = req.body.nom;
+    }
+
+    if (req.body.description !== undefined) {
+      donneesCategorie.description = req.body.description;
+    }
+
+    await categorie.update(donneesCategorie);
 
     return res.json({
       message: "Categorie modifiee avec succes.",
@@ -95,7 +108,6 @@ async function modifierCategorie(req, res) {
   } catch (error) {
     return res.status(500).json({
       message: "Erreur pendant la modification de la categorie.",
-      erreur: error.message,
     });
   }
 }
@@ -118,7 +130,6 @@ async function supprimerCategorie(req, res) {
   } catch (error) {
     return res.status(500).json({
       message: "Erreur pendant la suppression de la categorie.",
-      erreur: error.message,
     });
   }
 }

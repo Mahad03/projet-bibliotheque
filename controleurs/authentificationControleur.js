@@ -61,7 +61,6 @@ async function inscription(req, res) {
   } catch (error) {
     return res.status(500).json({
       message: "Erreur pendant l'inscription.",
-      erreur: error.message,
     });
   }
 }
@@ -118,7 +117,6 @@ async function connexion(req, res) {
   } catch (error) {
     return res.status(500).json({
       message: "Erreur pendant la connexion.",
-      erreur: error.message,
     });
   }
 }
@@ -146,7 +144,6 @@ async function profil(req, res) {
   } catch (error) {
     return res.status(500).json({
       message: "Erreur pendant la recuperation du profil.",
-      erreur: error.message,
     });
   }
 }
