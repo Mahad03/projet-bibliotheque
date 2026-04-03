@@ -152,3 +152,13 @@ Si ces variables sont vides, l'application demarre quand meme, mais aucun admin 
 ## Postman
 
 Une collection Postman de base est disponible dans le fichier `collection_postman.json`.
+
+## Scripts utiles
+
+- `npm run verifier:api`
+  - lance un scenario de verification automatique sur l'API avec la base MySQL configuree dans `.env`
+  - ce script suppose que les identifiants MySQL sont corrects et qu'un compte admin peut etre cree si `ADMIN_EMAIL` et `ADMIN_MOT_DE_PASSE` sont renseignes
+- `npm run mettre-a-jour:soumission`
+  - regenere `soumission/infos-soumission.txt`
+  - reconstruit le dossier `soumission/Projet1_IFM30-3/`
+  - recree l'archive `soumission/Projet1_IFM30-3.zip`
