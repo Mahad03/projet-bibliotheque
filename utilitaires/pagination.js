@@ -1,3 +1,4 @@
+// Convertir les parametres page/limit en valeurs utilisables par Sequelize.
 function obtenirPagination(query) {
   const page = Number(query.page) > 0 ? Number(query.page) : 1;
   const limit = Number(query.limit) > 0 ? Number(query.limit) : 10;
@@ -7,4 +8,3 @@ function obtenirPagination(query) {
 }
 
 module.exports = obtenirPagination;
-

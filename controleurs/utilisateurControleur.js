@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const { Role, Utilisateur } = require("../modeles");
 const obtenirPagination = require("../utilitaires/pagination");
 
+// Lister les utilisateurs avec filtres simples et pagination.
 async function listerUtilisateurs(req, res) {
   try {
     const { page, limit, offset } = obtenirPagination(req.query);
@@ -47,6 +48,7 @@ async function listerUtilisateurs(req, res) {
   }
 }
 
+// Recuperer un utilisateur precis sans son mot de passe.
 async function obtenirUtilisateur(req, res) {
   try {
     const utilisateur = await Utilisateur.findByPk(req.params.id, {
@@ -74,6 +76,7 @@ async function obtenirUtilisateur(req, res) {
   }
 }
 
+// Modifier un utilisateur et hacher le mot de passe si besoin.
 async function modifierUtilisateur(req, res) {
   try {
     const utilisateur = await Utilisateur.findByPk(req.params.id);
@@ -144,6 +147,7 @@ async function modifierUtilisateur(req, res) {
   }
 }
 
+// Supprimer un utilisateur par son identifiant.
 async function supprimerUtilisateur(req, res) {
   try {
     const utilisateur = await Utilisateur.findByPk(req.params.id);

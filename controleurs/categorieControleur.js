@@ -2,6 +2,7 @@ const { Op } = require("sequelize");
 const { Categorie, Livre } = require("../modeles");
 const obtenirPagination = require("../utilitaires/pagination");
 
+// Lister les categories avec une recherche simple par nom.
 async function listerCategories(req, res) {
   try {
     const { page, limit, offset } = obtenirPagination(req.query);
@@ -33,6 +34,7 @@ async function listerCategories(req, res) {
   }
 }
 
+// Recuperer une categorie et les livres qui lui sont lies.
 async function obtenirCategorie(req, res) {
   try {
     const categorie = await Categorie.findByPk(req.params.id, {
@@ -58,6 +60,7 @@ async function obtenirCategorie(req, res) {
   }
 }
 
+// Ajouter une nouvelle categorie.
 async function creerCategorie(req, res) {
   try {
     const nom = req.body.nom;
@@ -79,6 +82,7 @@ async function creerCategorie(req, res) {
   }
 }
 
+// Modifier une categorie existante.
 async function modifierCategorie(req, res) {
   try {
     const categorie = await Categorie.findByPk(req.params.id);
@@ -112,6 +116,7 @@ async function modifierCategorie(req, res) {
   }
 }
 
+// Supprimer une categorie par son identifiant.
 async function supprimerCategorie(req, res) {
   try {
     const categorie = await Categorie.findByPk(req.params.id);

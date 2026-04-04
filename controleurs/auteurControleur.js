@@ -2,6 +2,7 @@ const { Op } = require("sequelize");
 const { Auteur, Livre } = require("../modeles");
 const obtenirPagination = require("../utilitaires/pagination");
 
+// Lister les auteurs avec une recherche simple par nom.
 async function listerAuteurs(req, res) {
   try {
     const { page, limit, offset } = obtenirPagination(req.query);
@@ -33,6 +34,7 @@ async function listerAuteurs(req, res) {
   }
 }
 
+// Recuperer un auteur et la liste de ses livres.
 async function obtenirAuteur(req, res) {
   try {
     const auteur = await Auteur.findByPk(req.params.id, {
@@ -58,6 +60,7 @@ async function obtenirAuteur(req, res) {
   }
 }
 
+// Ajouter un nouvel auteur.
 async function creerAuteur(req, res) {
   try {
     const nom = req.body.nom;
@@ -81,6 +84,7 @@ async function creerAuteur(req, res) {
   }
 }
 
+// Modifier les informations d'un auteur existant.
 async function modifierAuteur(req, res) {
   try {
     const auteur = await Auteur.findByPk(req.params.id);
@@ -118,6 +122,7 @@ async function modifierAuteur(req, res) {
   }
 }
 
+// Supprimer un auteur par son identifiant.
 async function supprimerAuteur(req, res) {
   try {
     const auteur = await Auteur.findByPk(req.params.id);

@@ -16,6 +16,7 @@ function creerToken(utilisateur, roleNom) {
   );
 }
 
+// Inscrire un nouveau membre avec le role "membre" par defaut.
 async function inscription(req, res) {
   try {
     const { nomComplet, email, motDePasse } = req.body;
@@ -65,6 +66,7 @@ async function inscription(req, res) {
   }
 }
 
+// Verifier les identifiants puis retourner un token JWT.
 async function connexion(req, res) {
   try {
     const { email, motDePasse } = req.body;
@@ -121,6 +123,7 @@ async function connexion(req, res) {
   }
 }
 
+// Recuperer les informations du profil de l'utilisateur connecte.
 async function profil(req, res) {
   try {
     const utilisateur = await Utilisateur.findByPk(req.utilisateur.id, {

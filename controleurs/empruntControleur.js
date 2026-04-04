@@ -7,6 +7,7 @@ function ajouterJours(dateTexte, nombreDeJours) {
   return date.toISOString().split("T")[0];
 }
 
+// Creer un emprunt si l'utilisateur et le livre sont valides.
 async function creerEmprunt(req, res) {
   try {
     const utilisateur = await Utilisateur.findByPk(req.utilisateur.id);
@@ -60,6 +61,7 @@ async function creerEmprunt(req, res) {
   }
 }
 
+// Afficher seulement les emprunts de l'utilisateur connecte.
 async function listerMesEmprunts(req, res) {
   try {
     const { page, limit, offset } = obtenirPagination(req.query);
@@ -98,6 +100,7 @@ async function listerMesEmprunts(req, res) {
   }
 }
 
+// Afficher tous les emprunts pour l'administrateur.
 async function listerEmprunts(req, res) {
   try {
     const { page, limit, offset } = obtenirPagination(req.query);
@@ -150,6 +153,7 @@ async function listerEmprunts(req, res) {
   }
 }
 
+// Marquer un emprunt comme retourne et remettre le livre en stock.
 async function retournerEmprunt(req, res) {
   try {
     const emprunt = await Emprunt.findByPk(req.params.id, {

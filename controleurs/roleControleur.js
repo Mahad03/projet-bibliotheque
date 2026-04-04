@@ -1,6 +1,7 @@
 const { Role } = require("../modeles");
 const obtenirPagination = require("../utilitaires/pagination");
 
+// Lister les roles avec pagination.
 async function listerRoles(req, res) {
   try {
     const { page, limit, offset } = obtenirPagination(req.query);
@@ -30,6 +31,7 @@ async function listerRoles(req, res) {
   }
 }
 
+// Recuperer un role par son identifiant.
 async function obtenirRole(req, res) {
   try {
     const role = await Role.findByPk(req.params.id);
@@ -48,6 +50,7 @@ async function obtenirRole(req, res) {
   }
 }
 
+// Ajouter un nouveau role.
 async function creerRole(req, res) {
   try {
     const nom = req.body.nom;
@@ -69,6 +72,7 @@ async function creerRole(req, res) {
   }
 }
 
+// Modifier un role existant.
 async function modifierRole(req, res) {
   try {
     const role = await Role.findByPk(req.params.id);
@@ -102,6 +106,7 @@ async function modifierRole(req, res) {
   }
 }
 
+// Supprimer un role par son identifiant.
 async function supprimerRole(req, res) {
   try {
     const role = await Role.findByPk(req.params.id);

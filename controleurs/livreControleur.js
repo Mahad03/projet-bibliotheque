@@ -2,6 +2,7 @@ const { Op } = require("sequelize");
 const { Auteur, Categorie, Livre } = require("../modeles");
 const obtenirPagination = require("../utilitaires/pagination");
 
+// Lister les livres avec pagination et filtres simples.
 async function listerLivres(req, res) {
   try {
     const { page, limit, offset } = obtenirPagination(req.query);
@@ -59,6 +60,7 @@ async function listerLivres(req, res) {
   }
 }
 
+// Recuperer un seul livre avec son auteur et sa categorie.
 async function obtenirLivre(req, res) {
   try {
     const livre = await Livre.findByPk(req.params.id, {
@@ -90,6 +92,7 @@ async function obtenirLivre(req, res) {
   }
 }
 
+// Creer un livre apres verification de l'auteur et de la categorie.
 async function creerLivre(req, res) {
   try {
     const titre = req.body.titre;
@@ -142,6 +145,7 @@ async function creerLivre(req, res) {
   }
 }
 
+// Modifier un livre existant sans perdre les quantites.
 async function modifierLivre(req, res) {
   try {
     const livre = await Livre.findByPk(req.params.id);
@@ -228,6 +232,7 @@ async function modifierLivre(req, res) {
   }
 }
 
+// Supprimer un livre par son identifiant.
 async function supprimerLivre(req, res) {
   try {
     const livre = await Livre.findByPk(req.params.id);
