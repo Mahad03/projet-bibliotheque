@@ -190,36 +190,36 @@ async function modifierLivre(req, res) {
       });
     }
 
-    const donneesLivre = {};
+    const donnees = {};
 
     if (req.body.titre !== undefined) {
-      donneesLivre.titre = req.body.titre;
+      donnees.titre = req.body.titre;
     }
 
     if (req.body.resume !== undefined) {
-      donneesLivre.resume = req.body.resume;
+      donnees.resume = req.body.resume;
     }
 
     if (req.body.anneePublication !== undefined) {
-      donneesLivre.anneePublication = req.body.anneePublication;
+      donnees.anneePublication = req.body.anneePublication;
     }
 
     if (req.body.isbn !== undefined) {
-      donneesLivre.isbn = req.body.isbn;
+      donnees.isbn = req.body.isbn;
     }
 
     if (req.body.auteurId !== undefined) {
-      donneesLivre.auteurId = req.body.auteurId;
+      donnees.auteurId = req.body.auteurId;
     }
 
     if (req.body.categorieId !== undefined) {
-      donneesLivre.categorieId = req.body.categorieId;
+      donnees.categorieId = req.body.categorieId;
     }
 
-    donneesLivre.quantiteTotale = quantiteTotale;
-    donneesLivre.quantiteDisponible = quantiteDisponible;
+    donnees.quantiteTotale = quantiteTotale;
+    donnees.quantiteDisponible = quantiteDisponible;
 
-    await livre.update(donneesLivre);
+    await livre.update(donnees);
 
     return res.json({
       message: "Livre modifie avec succes.",

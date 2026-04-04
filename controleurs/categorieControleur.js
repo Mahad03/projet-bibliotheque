@@ -93,17 +93,17 @@ async function modifierCategorie(req, res) {
       });
     }
 
-    const donneesCategorie = {};
+    const donnees = {};
 
     if (req.body.nom !== undefined) {
-      donneesCategorie.nom = req.body.nom;
+      donnees.nom = req.body.nom;
     }
 
     if (req.body.description !== undefined) {
-      donneesCategorie.description = req.body.description;
+      donnees.description = req.body.description;
     }
 
-    await categorie.update(donneesCategorie);
+    await categorie.update(donnees);
 
     return res.json({
       message: "Categorie modifiee avec succes.",

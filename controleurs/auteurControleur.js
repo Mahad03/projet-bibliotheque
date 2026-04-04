@@ -95,21 +95,21 @@ async function modifierAuteur(req, res) {
       });
     }
 
-    const donneesAuteur = {};
+    const donnees = {};
 
     if (req.body.nom !== undefined) {
-      donneesAuteur.nom = req.body.nom;
+      donnees.nom = req.body.nom;
     }
 
     if (req.body.prenom !== undefined) {
-      donneesAuteur.prenom = req.body.prenom;
+      donnees.prenom = req.body.prenom;
     }
 
     if (req.body.biographie !== undefined) {
-      donneesAuteur.biographie = req.body.biographie;
+      donnees.biographie = req.body.biographie;
     }
 
-    await auteur.update(donneesAuteur);
+    await auteur.update(donnees);
 
     return res.json({
       message: "Auteur modifie avec succes.",

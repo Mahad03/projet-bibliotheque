@@ -125,7 +125,7 @@ async function modifierUtilisateur(req, res) {
 
     await utilisateur.update(donnees);
 
-    const utilisateurMisAJour = await Utilisateur.findByPk(utilisateur.id, {
+    const utilisateurModifie = await Utilisateur.findByPk(utilisateur.id, {
       attributes: { exclude: ["motDePasse"] },
       include: [
         {
@@ -138,7 +138,7 @@ async function modifierUtilisateur(req, res) {
 
     return res.json({
       message: "Utilisateur modifie avec succes.",
-      utilisateur: utilisateurMisAJour,
+      utilisateur: utilisateurModifie,
     });
   } catch (error) {
     return res.status(500).json({

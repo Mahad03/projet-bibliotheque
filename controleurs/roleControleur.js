@@ -83,17 +83,17 @@ async function modifierRole(req, res) {
       });
     }
 
-    const donneesRole = {};
+    const donnees = {};
 
     if (req.body.nom !== undefined) {
-      donneesRole.nom = req.body.nom;
+      donnees.nom = req.body.nom;
     }
 
     if (req.body.description !== undefined) {
-      donneesRole.description = req.body.description;
+      donnees.description = req.body.description;
     }
 
-    await role.update(donneesRole);
+    await role.update(donnees);
 
     return res.json({
       message: "Role modifie avec succes.",
