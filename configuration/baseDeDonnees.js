@@ -1,6 +1,7 @@
 const { Sequelize } = require("sequelize");
 const configuration = require("./environnement");
 
+// Creer la connexion Sequelize vers la base MySQL.
 const sequelize = new Sequelize(
   configuration.baseDeDonnees.nom,
   configuration.baseDeDonnees.utilisateur,

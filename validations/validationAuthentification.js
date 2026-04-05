@@ -1,5 +1,6 @@
 const { body } = require("express-validator");
 
+// Verifier les champs recus pendant l'inscription.
 const validerInscription = [
   body("nomComplet")
     .trim()
@@ -14,6 +15,7 @@ const validerInscription = [
     .withMessage("Le mot de passe doit contenir au moins 6 caracteres."),
 ];
 
+// Verifier les champs recus pendant la connexion.
 const validerConnexion = [
   body("email")
     .trim()

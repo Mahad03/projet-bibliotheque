@@ -1,5 +1,6 @@
 const { body } = require("express-validator");
 
+// Verifier les champs recus pour modifier un utilisateur.
 const validerUtilisateur = [
   body("nomComplet")
     .optional()

@@ -9,6 +9,7 @@ const {
 
 const routeur = express.Router();
 
+// Toutes les routes utilisateurs sont reservees a l'administrateur.
 routeur.use(authentification);
 routeur.use(autoriserRoles("admin"));
 

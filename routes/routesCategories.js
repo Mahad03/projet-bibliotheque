@@ -9,8 +9,11 @@ const {
 
 const routeur = express.Router();
 
+// Lecture publique des categories.
 routeur.get("/", categorieControleur.listerCategories);
 routeur.get("/:id", categorieControleur.obtenirCategorie);
+
+// Ecriture reservee a l'admin.
 routeur.post(
   "/",
   authentification,

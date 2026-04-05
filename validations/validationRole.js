@@ -1,5 +1,6 @@
 const { body } = require("express-validator");
 
+// Verifier les champs recus pour un role.
 const validerRole = [
   body("nom")
     .trim()

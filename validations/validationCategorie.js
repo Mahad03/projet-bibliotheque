@@ -1,5 +1,6 @@
 const { body } = require("express-validator");
 
+// Verifier les champs recus pour une categorie.
 const validerCategorie = [
   body("nom")
     .trim()

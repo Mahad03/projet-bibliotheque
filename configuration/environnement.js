@@ -6,6 +6,7 @@ require("dotenv").config({
   quiet: true,
 });
 
+// Generer un secret provisoire si aucun vrai secret JWT n'est fourni.
 function genererSecretTemporaire() {
   return crypto.randomBytes(32).toString("hex");
 }
@@ -18,6 +19,7 @@ function estValeurExemple(valeur) {
   return valeur.includes("changez") || valeur.includes("exemple");
 }
 
+// Regrouper toutes les variables d'environnement utiles au projet.
 const secretJwt = estValeurExemple(process.env.JWT_SECRET)
   ? genererSecretTemporaire()
   : process.env.JWT_SECRET;

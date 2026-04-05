@@ -1,6 +1,7 @@
 const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
+  // Definir la table des categories.
   const Categorie = sequelize.define(
     "Categorie",
     {

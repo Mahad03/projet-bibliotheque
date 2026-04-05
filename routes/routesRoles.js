@@ -7,6 +7,7 @@ const { validerRole } = require("../validations/validationRole");
 
 const routeur = express.Router();
 
+// Toutes les routes roles sont reservees a l'administrateur.
 routeur.use(authentification);
 routeur.use(autoriserRoles("admin"));
 

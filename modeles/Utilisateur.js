@@ -1,6 +1,7 @@
 const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
+  // Definir la table des utilisateurs.
   const Utilisateur = sequelize.define(
     "Utilisateur",
     {

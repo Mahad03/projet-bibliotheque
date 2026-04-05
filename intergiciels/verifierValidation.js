@@ -1,5 +1,6 @@
 const { validationResult } = require("express-validator");
 
+// Bloquer la route si express-validator detecte des erreurs.
 function verifierValidation(req, res, next) {
   const erreurs = validationResult(req);
 
@@ -14,4 +15,3 @@ function verifierValidation(req, res, next) {
 }
 
 module.exports = verifierValidation;
-

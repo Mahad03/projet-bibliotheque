@@ -7,8 +7,11 @@ const { validerAuteur } = require("../validations/validationAuteur");
 
 const routeur = express.Router();
 
+// Lecture publique des auteurs.
 routeur.get("/", auteurControleur.listerAuteurs);
 routeur.get("/:id", auteurControleur.obtenirAuteur);
+
+// Ecriture reservee a l'admin.
 routeur.post(
   "/",
   authentification,
