@@ -8,6 +8,7 @@ async function listerLivres(req, res) {
     const { page, limit, offset } = obtenirPagination(req.query);
     const where = {};
 
+    // Chaque filtre est optionnel et s'ajoute seulement s'il est present.
     if (req.query.titre) {
       where.titre = {
         [Op.like]: `%${req.query.titre}%`,
@@ -95,6 +96,7 @@ async function obtenirLivre(req, res) {
 // Creer un livre apres verification de l'auteur et de la categorie.
 async function creerLivre(req, res) {
   try {
+    // Recuperer les champs du body pour garder la creation explicite.
     const titre = req.body.titre;
     const resume = req.body.resume || null;
     const anneePublication = req.body.anneePublication || null;
@@ -102,6 +104,7 @@ async function creerLivre(req, res) {
     const auteurId = req.body.auteurId;
     const categorieId = req.body.categorieId;
 
+    // Le livre doit toujours etre relie a un auteur et une categorie existants.
     const auteur = await Auteur.findByPk(auteurId);
     const categorie = await Categorie.findByPk(categorieId);
 
@@ -111,6 +114,7 @@ async function creerLivre(req, res) {
       });
     }
 
+    // Si la quantite disponible n'est pas envoyee, on la cale sur la quantite totale.
     const quantiteTotale = Number(req.body.quantiteTotale || 1);
     const quantiteDisponible = Number(
       req.body.quantiteDisponible ?? quantiteTotale
@@ -156,6 +160,7 @@ async function modifierLivre(req, res) {
       });
     }
 
+    // Si l'auteur ou la categorie changent, on verifie que les nouveaux ids existent.
     if (req.body.auteurId) {
       const auteur = await Auteur.findByPk(req.body.auteurId);
 
@@ -190,6 +195,7 @@ async function modifierLivre(req, res) {
       });
     }
 
+    // On reconstruit un objet simple avec seulement les champs a modifier.
     const donnees = {};
 
     if (req.body.titre !== undefined) {

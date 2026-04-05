@@ -4,6 +4,7 @@ const configuration = require("../configuration/environnement");
 const { Role, Utilisateur } = require("../modeles");
 
 function creerToken(utilisateur, roleNom) {
+  // Le token garde seulement les informations utiles a l'API.
   return jwt.sign(
     {
       id: utilisateur.id,
@@ -21,6 +22,7 @@ async function inscription(req, res) {
   try {
     const { nomComplet, email, motDePasse } = req.body;
 
+    // Bloquer l'inscription si l'email existe deja.
     const utilisateurExistant = await Utilisateur.findOne({
       where: { email },
     });
@@ -31,6 +33,7 @@ async function inscription(req, res) {
       });
     }
 
+    // Recuperer le role "membre" pour l'affecter au nouvel utilisateur.
     const [roleMembre] = await Role.findOrCreate({
       where: { nom: "membre" },
       defaults: {
@@ -38,6 +41,7 @@ async function inscription(req, res) {
       },
     });
 
+    // Enregistrer un mot de passe hash et non le mot de passe en clair.
     const motDePasseHash = await bcrypt.hash(motDePasse, 10);
 
     const utilisateur = await Utilisateur.create({
@@ -47,6 +51,7 @@ async function inscription(req, res) {
       roleId: roleMembre.id,
     });
 
+    // Retourner un token directement pour eviter une connexion separee.
     const token = creerToken(utilisateur, roleMembre.nom);
 
     return res.status(201).json({
@@ -71,6 +76,7 @@ async function connexion(req, res) {
   try {
     const { email, motDePasse } = req.body;
 
+    // Chercher l'utilisateur et son role en une seule requete.
     const utilisateur = await Utilisateur.findOne({
       where: { email },
       include: [
@@ -87,6 +93,7 @@ async function connexion(req, res) {
       });
     }
 
+    // Comparer le mot de passe saisi avec le hash stocke en base.
     const motDePasseValide = await bcrypt.compare(
       motDePasse,
       utilisateur.motDePasse
@@ -98,6 +105,7 @@ async function connexion(req, res) {
       });
     }
 
+    // Refuser la connexion si le compte a ete desactive.
     if (!utilisateur.actif) {
       return res.status(403).json({
         message: "Ce compte est desactive.",
@@ -126,6 +134,7 @@ async function connexion(req, res) {
 // Recuperer les informations du profil de l'utilisateur connecte.
 async function profil(req, res) {
   try {
+    // req.utilisateur vient du token decode dans le middleware.
     const utilisateur = await Utilisateur.findByPk(req.utilisateur.id, {
       attributes: { exclude: ["motDePasse"] },
       include: [

@@ -8,6 +8,7 @@ async function listerUtilisateurs(req, res) {
     const { page, limit, offset } = obtenirPagination(req.query);
     const where = {};
 
+    // Ces filtres restent simples pour garder la route facile a utiliser.
     if (req.query.email) {
       where.email = req.query.email;
     }
@@ -87,6 +88,7 @@ async function modifierUtilisateur(req, res) {
       });
     }
 
+    // Copier seulement les champs autorises pour eviter de tout remplacer.
     const donnees = {};
 
     if (req.body.nomComplet !== undefined) {
@@ -109,10 +111,12 @@ async function modifierUtilisateur(req, res) {
       donnees.motDePasse = req.body.motDePasse;
     }
 
+    // Si un nouveau mot de passe est fourni, on le hash avant la sauvegarde.
     if (donnees.motDePasse) {
       donnees.motDePasse = await bcrypt.hash(donnees.motDePasse, 10);
     }
 
+    // Verifier le role seulement si l'id du role change.
     if (donnees.roleId) {
       const role = await Role.findByPk(donnees.roleId);
 
@@ -125,6 +129,7 @@ async function modifierUtilisateur(req, res) {
 
     await utilisateur.update(donnees);
 
+    // Relire l'utilisateur pour retourner une version propre sans mot de passe.
     const utilisateurModifie = await Utilisateur.findByPk(utilisateur.id, {
       attributes: { exclude: ["motDePasse"] },
       include: [

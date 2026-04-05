@@ -10,6 +10,7 @@ function ajouterJours(dateTexte, nombreDeJours) {
 // Creer un emprunt si l'utilisateur et le livre sont valides.
 async function creerEmprunt(req, res) {
   try {
+    // Recuperer l'utilisateur connecte et le livre demande.
     const utilisateur = await Utilisateur.findByPk(req.utilisateur.id);
     const livre = await Livre.findByPk(req.body.livreId);
 
@@ -31,12 +32,14 @@ async function creerEmprunt(req, res) {
       });
     }
 
+    // Verifier qu'il reste encore des exemplaires disponibles.
     if (livre.quantiteDisponible <= 0) {
       return res.status(400).json({
         message: "Ce livre n'est plus disponible.",
       });
     }
 
+    // La date de retour prevue est fixee a 14 jours apres l'emprunt.
     const aujourdHui = new Date().toISOString().split("T")[0];
 
     const emprunt = await Emprunt.create({
@@ -46,6 +49,7 @@ async function creerEmprunt(req, res) {
       dateRetourPrevue: ajouterJours(aujourdHui, 14),
     });
 
+    // Quand un emprunt est cree, on diminue le stock disponible.
     await livre.update({
       quantiteDisponible: livre.quantiteDisponible - 1,
     });
@@ -65,10 +69,13 @@ async function creerEmprunt(req, res) {
 async function listerMesEmprunts(req, res) {
   try {
     const { page, limit, offset } = obtenirPagination(req.query);
+
+    // Un membre ne peut voir que ses propres emprunts.
     const where = {
       utilisateurId: req.utilisateur.id,
     };
 
+    // Le statut reste optionnel: en_cours ou retourne.
     if (req.query.statut) {
       where.statut = req.query.statut;
     }
@@ -106,6 +113,7 @@ async function listerEmprunts(req, res) {
     const { page, limit, offset } = obtenirPagination(req.query);
     const where = {};
 
+    // L'administrateur peut filtrer la liste globale.
     if (req.query.statut) {
       where.statut = req.query.statut;
     }
@@ -156,6 +164,7 @@ async function listerEmprunts(req, res) {
 // Marquer un emprunt comme retourne et remettre le livre en stock.
 async function retournerEmprunt(req, res) {
   try {
+    // Charger aussi le livre lie pour remettre le stock a jour.
     const emprunt = await Emprunt.findByPk(req.params.id, {
       include: [
         {
@@ -171,6 +180,7 @@ async function retournerEmprunt(req, res) {
       });
     }
 
+    // Seul l'admin ou le proprietaire de l'emprunt peut faire le retour.
     const estAdmin = req.utilisateur.roleNom === "admin";
     const estProprietaire = emprunt.utilisateurId === req.utilisateur.id;
 
@@ -180,6 +190,7 @@ async function retournerEmprunt(req, res) {
       });
     }
 
+    // Empecher un double retour du meme emprunt.
     if (emprunt.statut === "retourne") {
       return res.status(400).json({
         message: "Cet emprunt a deja ete retourne.",
@@ -193,6 +204,7 @@ async function retournerEmprunt(req, res) {
       dateRetourEffective,
     });
 
+    // Quand le livre revient, on remet une unite dans le stock disponible.
     await emprunt.livre.update({
       quantiteDisponible: emprunt.livre.quantiteDisponible + 1,
     });

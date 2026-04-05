@@ -40,6 +40,7 @@ app.get("/api", (req, res) => {
   });
 });
 
+// Brancher tous les groupes de routes de l'API.
 app.use("/api/authentification", routesAuthentification);
 app.use("/api/roles", routesRoles);
 app.use("/api/utilisateurs", routesUtilisateurs);
@@ -73,6 +74,7 @@ async function initialiserRolesEtAdmin() {
   const emailAdmin = configuration.authentification.emailAdmin;
   const motDePasseAdmin = configuration.authentification.motDePasseAdmin;
 
+  // Si rien n'est prevu dans .env, on ne cree pas d'admin automatiquement.
   if (!emailAdmin || !motDePasseAdmin) {
     return;
   }
@@ -84,6 +86,7 @@ async function initialiserRolesEtAdmin() {
   });
 
   if (!adminExistant) {
+    // Le mot de passe de l'admin est hash avant d'etre enregistre.
     const motDePasseHash = await bcrypt.hash(motDePasseAdmin, 10);
 
     await Utilisateur.create({
@@ -104,8 +107,13 @@ async function demarrerServeur() {
       );
     }
 
+    // Verifier l'acces a MySQL avant de lancer le serveur.
     await sequelize.authenticate();
+
+    // Creer les tables manquantes si besoin.
     await sequelize.sync();
+
+    // Ajouter les roles de base et l'admin de demarrage.
     await initialiserRolesEtAdmin();
 
     app.listen(PORT, () => {
