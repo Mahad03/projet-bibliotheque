@@ -1,0 +1,59 @@
+<%- include('partials/entete', { titre, pageActive }) %>
+
+<section class="hero">
+  <div>
+    <p class="sur-titre">Projet de conception web - partie 2</p>
+    <h1>Interface de gestion de bibliotheque en EJS</h1>
+    <p>
+      Cette interface permet la connexion, la gestion CRUD des tables et le suivi des emprunts.
+    </p>
+    <div class="actions-ligne">
+      <a class="bouton" href="/livres">Voir les livres</a>
+      <% if (!utilisateurConnecte) { %>
+        <a class="bouton bouton-secondaire" href="/connexion">Se connecter</a>
+      <% } else { %>
+        <a class="bouton bouton-secondaire" href="/tableau-de-bord">Tableau de bord</a>
+      <% } %>
+    </div>
+  </div>
+  <div class="grille-stats">
+    <article class="carte-stat">
+      <strong><%= statistiques?.nombreLivres || 0 %></strong>
+      <span>Livres</span>
+    </article>
+    <article class="carte-stat">
+      <strong><%= statistiques?.nombreAuteurs || 0 %></strong>
+      <span>Auteurs</span>
+    </article>
+    <article class="carte-stat">
+      <strong><%= statistiques?.nombreCategories || 0 %></strong>
+      <span>Categories</span>
+    </article>
+  </div>
+</section>
+
+<section>
+  <div class="section-titre">
+    <h2>Derniers livres ajoutes</h2>
+    <a href="/livres">Tout le catalogue</a>
+  </div>
+  <div class="grille-cartes">
+    <% if (derniersLivres && derniersLivres.length > 0) { %>
+      <% derniersLivres.forEach((livre) => { %>
+        <article class="carte">
+          <% if (livre.image) { %>
+            <img class="carte-image" src="<%= livre.image %>" alt="Image du livre" />
+          <% } %>
+          <h3><%= livre.titre %></h3>
+          <p><strong>Auteur :</strong> <%= [livre.auteur?.prenom, livre.auteur?.nom].filter(Boolean).join(' ') %></p>
+          <p><strong>Categorie :</strong> <%= livre.categorie?.nom %></p>
+          <p><strong>Disponible :</strong> <%= livre.quantiteDisponible %> / <%= livre.quantiteTotale %></p>
+        </article>
+      <% }) %>
+    <% } else { %>
+      <p>Aucun livre n'est encore disponible.</p>
+    <% } %>
+  </div>
+</section>
+
+<%- include('partials/pied') %>

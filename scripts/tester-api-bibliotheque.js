@@ -82,19 +82,21 @@ async function executerTests() {
   const { serveur } = await lancerServeur();
 
   try {
-    const baseUrl = "http://127.0.0.1:3000";
-    const adminEmail =
-      configuration.authentification.emailAdmin || "admin.local@example.com";
-    const adminMotDePasse =
-      configuration.authentification.motDePasseAdmin || "Admin1234!";
+    const adresseBase = "http://127.0.0.1:3000";
+    const courrielAdministrateur =
+      configuration.authentification.courrielAdministrateur ||
+      "administrateur.local@exemple.com";
+    const motDePasseAdministrateur =
+      configuration.authentification.motDePasseAdministrateur ||
+      "Bibliotheque123!";
 
     const membre = {
       nomComplet: "Membre Test",
-      email: `membre.${Date.now()}@example.com`,
+      email: `membre.${Date.now()}@exemple.local`,
       motDePasse: "motdepasse123",
     };
 
-    const inscription = await requeteJson(`${baseUrl}/api/authentification/inscription`, {
+    const inscription = await requeteJson(`${adresseBase}/api/authentification/inscription`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -102,7 +104,7 @@ async function executerTests() {
       body: JSON.stringify(membre),
     });
 
-    const connexionMembre = await requeteJson(`${baseUrl}/api/authentification/connexion`, {
+    const connexionMembre = await requeteJson(`${adresseBase}/api/authentification/connexion`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -113,27 +115,30 @@ async function executerTests() {
       }),
     });
 
-    let connexionAdmin = null;
-    let jetonAdmin = "";
+    let connexionAdministrateur = null;
+    let jetonAdministrateur = "";
 
-    if (configuration.authentification.emailAdmin && configuration.authentification.motDePasseAdmin) {
-      connexionAdmin = await requeteJson(`${baseUrl}/api/authentification/connexion`, {
+    if (
+      configuration.authentification.courrielAdministrateur &&
+      configuration.authentification.motDePasseAdministrateur
+    ) {
+      connexionAdministrateur = await requeteJson(`${adresseBase}/api/authentification/connexion`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: adminEmail,
-          motDePasse: adminMotDePasse,
+          email: courrielAdministrateur,
+          motDePasse: motDePasseAdministrateur,
         }),
       });
 
-      jetonAdmin = connexionAdmin.token;
+      jetonAdministrateur = connexionAdministrateur.jeton;
     }
 
-    const profil = await requeteJson(`${baseUrl}/api/authentification/profil`, {
+    const profil = await requeteJson(`${adresseBase}/api/authentification/profil`, {
       headers: {
-        Authorization: `Bearer ${connexionMembre.token}`,
+        Authorization: `Bearer ${connexionMembre.jeton}`,
       },
     });
 
@@ -142,12 +147,12 @@ async function executerTests() {
     let livre = null;
     let emprunt = null;
 
-    if (jetonAdmin) {
-      categorie = await requeteJson(`${baseUrl}/api/categories`, {
+    if (jetonAdministrateur) {
+      categorie = await requeteJson(`${adresseBase}/api/categories`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${jetonAdmin}`,
+          Authorization: `Bearer ${jetonAdministrateur}`,
         },
         body: JSON.stringify({
           nom: `Roman ${Date.now()}`,
@@ -155,11 +160,11 @@ async function executerTests() {
         }),
       });
 
-      auteur = await requeteJson(`${baseUrl}/api/auteurs`, {
+      auteur = await requeteJson(`${adresseBase}/api/auteurs`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${jetonAdmin}`,
+          Authorization: `Bearer ${jetonAdministrateur}`,
         },
         body: JSON.stringify({
           nom: "Hugo",
@@ -168,11 +173,11 @@ async function executerTests() {
         }),
       });
 
-      livre = await requeteJson(`${baseUrl}/api/livres`, {
+      livre = await requeteJson(`${adresseBase}/api/livres`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${jetonAdmin}`,
+          Authorization: `Bearer ${jetonAdministrateur}`,
         },
         body: JSON.stringify({
           titre: `Livre ${Date.now()}`,
@@ -186,35 +191,35 @@ async function executerTests() {
         }),
       });
 
-      await requeteJson(`${baseUrl}/api/livres?page=1&limit=5&disponible=true`);
+      await requeteJson(`${adresseBase}/api/livres?page=1&limit=5&disponible=true`);
 
-      emprunt = await requeteJson(`${baseUrl}/api/emprunts`, {
+      emprunt = await requeteJson(`${adresseBase}/api/emprunts`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${connexionMembre.token}`,
+          Authorization: `Bearer ${connexionMembre.jeton}`,
         },
         body: JSON.stringify({
           livreId: livre.livre.id,
         }),
       });
 
-      await requeteJson(`${baseUrl}/api/emprunts/mes-emprunts`, {
+      await requeteJson(`${adresseBase}/api/emprunts/mes-emprunts`, {
         headers: {
-          Authorization: `Bearer ${connexionMembre.token}`,
+          Authorization: `Bearer ${connexionMembre.jeton}`,
         },
       });
 
-      await requeteJson(`${baseUrl}/api/emprunts/${emprunt.emprunt.id}/retour`, {
+      await requeteJson(`${adresseBase}/api/emprunts/${emprunt.emprunt.id}/retour`, {
         method: "PUT",
         headers: {
-          Authorization: `Bearer ${connexionMembre.token}`,
+          Authorization: `Bearer ${connexionMembre.jeton}`,
         },
       });
 
-      await requeteJson(`${baseUrl}/api/emprunts?statut=retourne&page=1&limit=5`, {
+      await requeteJson(`${adresseBase}/api/emprunts?statut=retourne&page=1&limit=5`, {
         headers: {
-          Authorization: `Bearer ${jetonAdmin}`,
+          Authorization: `Bearer ${jetonAdministrateur}`,
         },
       });
     }
@@ -225,7 +230,7 @@ async function executerTests() {
           succes: true,
           inscription: inscription.message,
           profil: profil.email,
-          adminTeste: Boolean(jetonAdmin),
+          administrateurTeste: Boolean(jetonAdministrateur),
           livreCree: Boolean(livre),
           empruntTeste: Boolean(emprunt),
         },

@@ -1,0 +1,49 @@
+<%- include('../partials/entete', { titre, pageActive }) %>
+
+<section class="section-titre">
+  <div>
+    <h1>Catalogue des livres</h1>
+    <p>Consultez les livres disponibles et gerez le catalogue si vous etes administrateur.</p>
+  </div>
+  <% if (utilisateurConnecte && utilisateurConnecte.role.nom === 'administrateur') { %>
+    <a class="bouton" href="/livres/nouveau">Nouveau livre</a>
+  <% } %>
+</section>
+
+<form class="barre-filtres" method="get" action="/livres">
+  <input type="text" name="titre" placeholder="Rechercher un titre" value="<%= filtres.titre %>" />
+  <select name="categorieId">
+    <option value="">Toutes les categories</option>
+    <% categories.forEach((categorie) => { %>
+      <option value="<%= categorie.id %>" <%= String(filtres.categorieId) === String(categorie.id) ? 'selected' : '' %>><%= categorie.nom %></option>
+    <% }) %>
+  </select>
+  <label class="case">
+    <input type="checkbox" name="disponible" value="true" <%= filtres.disponible ? 'checked' : '' %> />
+    Uniquement disponibles
+  </label>
+  <button class="bouton bouton-secondaire" type="submit">Filtrer</button>
+</form>
+
+<div class="grille-cartes">
+  <% livres.forEach((livre) => { %>
+    <article class="carte">
+      <% if (livre.image) { %><img class="carte-image" src="<%= livre.image %>" alt="Image du livre" /><% } %>
+      <h3><%= livre.titre %></h3>
+      <p><strong>Auteur :</strong> <%= [livre.auteur?.prenom, livre.auteur?.nom].filter(Boolean).join(' ') %></p>
+      <p><strong>Categorie :</strong> <%= livre.categorie?.nom %></p>
+      <p><strong>ISBN :</strong> <%= livre.isbn %></p>
+      <p><strong>Disponibilite :</strong> <%= livre.quantiteDisponible %> / <%= livre.quantiteTotale %></p>
+      <% if (utilisateurConnecte && utilisateurConnecte.role.nom === 'administrateur') { %>
+        <div class="actions-ligne">
+          <a class="lien-action" href="/livres/<%= livre.id %>/modifier">Modifier</a>
+          <form action="/livres/<%= livre.id %>/supprimer" method="post">
+            <button class="lien-action danger" type="submit">Supprimer</button>
+          </form>
+        </div>
+      <% } %>
+    </article>
+  <% }) %>
+</div>
+
+<%- include('../partials/pied') %>

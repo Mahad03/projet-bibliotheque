@@ -1,0 +1,66 @@
+<%- include('../partials/entete', { titre, pageActive }) %>
+
+<form class="carte-formulaire" action="<%= mode === 'creation' ? '/livres/nouveau' : '/livres/' + donnees.id + '/modifier' %>" method="post" enctype="multipart/form-data">
+  <h1><%= mode === 'creation' ? 'Nouveau livre' : 'Modifier un livre' %></h1>
+
+  <label>Titre</label>
+  <input type="text" name="titre" value="<%= donnees.titre || '' %>" />
+  <% if (erreurs.titre) { %><p class="erreur-champ"><%= erreurs.titre %></p><% } %>
+
+  <label>ISBN</label>
+  <input type="text" name="isbn" value="<%= donnees.isbn || '' %>" />
+  <% if (erreurs.isbn) { %><p class="erreur-champ"><%= erreurs.isbn %></p><% } %>
+
+  <label>Resume</label>
+  <textarea name="resume" rows="5"><%= donnees.resume || '' %></textarea>
+
+  <div class="grille-formulaire">
+    <div>
+      <label>Annee de publication</label>
+      <input type="number" name="anneePublication" value="<%= donnees.anneePublication || '' %>" />
+      <% if (erreurs.anneePublication) { %><p class="erreur-champ"><%= erreurs.anneePublication %></p><% } %>
+    </div>
+    <div>
+      <label>Auteur</label>
+      <select name="auteurId">
+        <option value="">Choisir un auteur</option>
+        <% auteurs.forEach((auteur) => { %>
+          <option value="<%= auteur.id %>" <%= String(donnees.auteurId) === String(auteur.id) ? 'selected' : '' %>><%= [auteur.prenom, auteur.nom].filter(Boolean).join(' ') %></option>
+        <% }) %>
+      </select>
+      <% if (erreurs.auteurId) { %><p class="erreur-champ"><%= erreurs.auteurId %></p><% } %>
+    </div>
+    <div>
+      <label>Categorie</label>
+      <select name="categorieId">
+        <option value="">Choisir une categorie</option>
+        <% categories.forEach((categorie) => { %>
+          <option value="<%= categorie.id %>" <%= String(donnees.categorieId) === String(categorie.id) ? 'selected' : '' %>><%= categorie.nom %></option>
+        <% }) %>
+      </select>
+      <% if (erreurs.categorieId) { %><p class="erreur-champ"><%= erreurs.categorieId %></p><% } %>
+    </div>
+    <div>
+      <label>Quantite totale</label>
+      <input type="number" name="quantiteTotale" value="<%= donnees.quantiteTotale ?? 1 %>" />
+      <% if (erreurs.quantiteTotale) { %><p class="erreur-champ"><%= erreurs.quantiteTotale %></p><% } %>
+    </div>
+    <div>
+      <label>Quantite disponible</label>
+      <input type="number" name="quantiteDisponible" value="<%= donnees.quantiteDisponible ?? 1 %>" />
+      <% if (erreurs.quantiteDisponible) { %><p class="erreur-champ"><%= erreurs.quantiteDisponible %></p><% } %>
+    </div>
+  </div>
+
+  <label>Image</label>
+  <input type="file" name="image" accept="image/*" />
+  <% if (erreurs.image) { %><p class="erreur-champ"><%= erreurs.image %></p><% } %>
+  <% if (donnees.image) { %><img class="apercu-image" src="<%= donnees.image %>" alt="Image actuelle" /><% } %>
+
+  <div class="actions-ligne">
+    <button class="bouton" type="submit">Enregistrer</button>
+    <a class="bouton bouton-secondaire" href="/livres">Annuler</a>
+  </div>
+</form>
+
+<%- include('../partials/pied') %>

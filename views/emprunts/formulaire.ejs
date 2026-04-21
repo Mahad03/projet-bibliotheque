@@ -1,0 +1,56 @@
+<%- include('../partials/entete', { titre, pageActive }) %>
+
+<form class="carte-formulaire" action="<%= mode === 'creation' ? '/emprunts/nouveau' : '/emprunts/' + donnees.id + '/modifier' %>" method="post">
+  <h1><%= mode === 'creation' ? 'Nouvel emprunt' : 'Modifier un emprunt' %></h1>
+
+  <% if (mode === 'creation') { %>
+    <% if (estAdministrateur) { %>
+      <label>Utilisateur</label>
+      <select name="utilisateurId">
+        <option value="">Choisir un utilisateur</option>
+        <% utilisateurs.forEach((utilisateur) => { %>
+          <option value="<%= utilisateur.id %>" <%= String(donnees.utilisateurId) === String(utilisateur.id) ? 'selected' : '' %>><%= utilisateur.nomComplet %> - <%= utilisateur.role?.nom %></option>
+        <% }) %>
+      </select>
+      <% if (erreurs.utilisateurId) { %><p class="erreur-champ"><%= erreurs.utilisateurId %></p><% } %>
+    <% } %>
+
+    <label>Livre</label>
+    <select name="livreId">
+      <option value="">Choisir un livre</option>
+      <% livres.forEach((livre) => { %>
+        <option value="<%= livre.id %>" <%= String(donnees.livreId) === String(livre.id) ? 'selected' : '' %>><%= livre.titre %> - <%= livre.quantiteDisponible %> disponible(s)</option>
+      <% }) %>
+    </select>
+    <% if (erreurs.livreId) { %><p class="erreur-champ"><%= erreurs.livreId %></p><% } %>
+  <% } else { %>
+    <label>Utilisateur</label>
+    <input type="text" value="<%= donnees.utilisateurNom %>" disabled />
+
+    <label>Livre</label>
+    <input type="text" value="<%= donnees.livreTitre %>" disabled />
+  <% } %>
+
+  <label>Date de retour prevue</label>
+  <input type="date" name="dateRetourPrevue" value="<%= donnees.dateRetourPrevue || '' %>" />
+  <% if (erreurs.dateRetourPrevue) { %><p class="erreur-champ"><%= erreurs.dateRetourPrevue %></p><% } %>
+
+  <% if (mode === 'modification') { %>
+    <label>Statut</label>
+    <select name="statut">
+      <option value="en_cours" <%= donnees.statut === 'en_cours' ? 'selected' : '' %>>En cours</option>
+      <option value="retourne" <%= donnees.statut === 'retourne' ? 'selected' : '' %>>Retourne</option>
+    </select>
+    <% if (erreurs.statut) { %><p class="erreur-champ"><%= erreurs.statut %></p><% } %>
+
+    <label>Date de retour effective</label>
+    <input type="date" name="dateRetourEffective" value="<%= donnees.dateRetourEffective || '' %>" />
+  <% } %>
+
+  <div class="actions-ligne">
+    <button class="bouton" type="submit">Enregistrer</button>
+    <a class="bouton bouton-secondaire" href="/emprunts">Annuler</a>
+  </div>
+</form>
+
+<%- include('../partials/pied') %>

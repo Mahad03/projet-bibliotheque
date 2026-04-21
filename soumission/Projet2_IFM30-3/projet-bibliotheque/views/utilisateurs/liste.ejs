@@ -1,0 +1,38 @@
+<%- include('../partials/entete', { titre, pageActive }) %>
+
+<section class="section-titre">
+  <h1>Utilisateurs</h1>
+  <a class="bouton" href="/utilisateurs/nouveau">Nouvel utilisateur</a>
+</section>
+
+<div class="tableau-responsive">
+  <table class="tableau">
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Actif</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% utilisateurs.forEach((utilisateur) => { %>
+        <tr>
+          <td><%= utilisateur.nomComplet %></td>
+          <td><%= utilisateur.email %></td>
+          <td><%= utilisateur.role?.nom %></td>
+          <td><%= utilisateur.actif ? 'Oui' : 'Non' %></td>
+          <td class="actions-cellule">
+            <a class="lien-action" href="/utilisateurs/<%= utilisateur.id %>/modifier">Modifier</a>
+            <form action="/utilisateurs/<%= utilisateur.id %>/supprimer" method="post">
+              <button class="lien-action danger" type="submit">Supprimer</button>
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+
+<%- include('../partials/pied') %>

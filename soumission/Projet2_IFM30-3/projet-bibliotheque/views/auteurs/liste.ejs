@@ -1,0 +1,29 @@
+<%- include('../partials/entete', { titre, pageActive }) %>
+
+<section class="section-titre">
+  <h1>Auteurs</h1>
+  <% if (utilisateurConnecte && utilisateurConnecte.role.nom === 'administrateur') { %>
+    <a class="bouton" href="/auteurs/nouveau">Nouvel auteur</a>
+  <% } %>
+</section>
+
+<div class="grille-cartes">
+  <% auteurs.forEach((auteur) => { %>
+    <article class="carte">
+      <% if (auteur.image) { %><img class="carte-image" src="<%= auteur.image %>" alt="Image de l'auteur" /><% } %>
+      <h3><%= [auteur.prenom, auteur.nom].filter(Boolean).join(' ') %></h3>
+      <p><%= auteur.biographie || 'Aucune biographie ajoutee.' %></p>
+      <p><strong>Livres :</strong> <%= auteur.livres.length %></p>
+      <% if (utilisateurConnecte && utilisateurConnecte.role.nom === 'administrateur') { %>
+        <div class="actions-ligne">
+          <a class="lien-action" href="/auteurs/<%= auteur.id %>/modifier">Modifier</a>
+          <form action="/auteurs/<%= auteur.id %>/supprimer" method="post">
+            <button class="lien-action danger" type="submit">Supprimer</button>
+          </form>
+        </div>
+      <% } %>
+    </article>
+  <% }) %>
+</div>
+
+<%- include('../partials/pied') %>

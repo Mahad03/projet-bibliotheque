@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= titre %> - Bibliotheque</title>
+    <link rel="stylesheet" href="/public/styles/site.css" />
+  </head>
+  <body>
+    <header class="entete-site">
+      <div class="conteneur entete-barre">
+        <a class="marque" href="/">Bibliotheque</a>
+        <nav class="menu-principal">
+          <a class="<%= pageActive === 'accueil' ? 'actif' : '' %>" href="/">Accueil</a>
+          <a class="<%= pageActive === 'livres' ? 'actif' : '' %>" href="/livres">Livres</a>
+          <a class="<%= pageActive === 'auteurs' ? 'actif' : '' %>" href="/auteurs">Auteurs</a>
+          <a class="<%= pageActive === 'categories' ? 'actif' : '' %>" href="/categories">Categories</a>
+          <% if (utilisateurConnecte) { %>
+            <a class="<%= pageActive === 'tableau-de-bord' ? 'actif' : '' %>" href="/tableau-de-bord">Tableau de bord</a>
+            <a class="<%= pageActive === 'emprunts' ? 'actif' : '' %>" href="/emprunts">Emprunts</a>
+            <% if (utilisateurConnecte.role.nom === 'administrateur') { %>
+              <a class="<%= pageActive === 'roles' ? 'actif' : '' %>" href="/roles">Roles</a>
+              <a class="<%= pageActive === 'utilisateurs' ? 'actif' : '' %>" href="/utilisateurs">Utilisateurs</a>
+            <% } %>
+          <% } %>
+        </nav>
+        <div class="zone-utilisateur">
+          <% if (utilisateurConnecte) { %>
+            <span class="badge-utilisateur"><%= utilisateurConnecte.nomComplet %> - <%= utilisateurConnecte.role.nom %></span>
+            <form action="/deconnexion" method="post">
+              <button class="bouton bouton-secondaire" type="submit">Deconnexion</button>
+            </form>
+          <% } else { %>
+            <a class="bouton bouton-secondaire" href="/connexion">Connexion</a>
+            <a class="bouton" href="/inscription">Inscription</a>
+          <% } %>
+        </div>
+      </div>
+    </header>
+    <main class="conteneur contenu-principal">
+      <%- include('alertes') %>
