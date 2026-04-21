@@ -1,0 +1,10 @@
+node_modules/
+.env
+npm-debug.log*
+.playwright-cli/
+.codex/
+output/
+.serveur.log
+.serveur.err.log
+public/televersements/*
+!public/televersements/.gitkeep

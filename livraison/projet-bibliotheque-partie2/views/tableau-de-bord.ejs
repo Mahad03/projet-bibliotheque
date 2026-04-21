@@ -1,0 +1,53 @@
+<%- include('partials/entete', { titre, pageActive }) %>
+
+<section class="section-titre">
+  <div>
+    <h1>Tableau de bord</h1>
+    <p>Bienvenue <%= utilisateurConnecte.nomComplet %>.</p>
+  </div>
+</section>
+
+<% if (estAdministrateur) { %>
+  <div class="grille-stats">
+    <article class="carte-stat">
+      <strong><%= indicateurs.nombreUtilisateurs %></strong>
+      <span>Utilisateurs</span>
+    </article>
+    <article class="carte-stat">
+      <strong><%= indicateurs.empruntsEnCours %></strong>
+      <span>Emprunts en cours</span>
+    </article>
+  </div>
+  <div class="grille-raccourcis">
+    <a class="carte-action" href="/utilisateurs">Gerer les utilisateurs</a>
+    <a class="carte-action" href="/roles">Gerer les roles</a>
+    <a class="carte-action" href="/auteurs">Gerer les auteurs</a>
+    <a class="carte-action" href="/categories">Gerer les categories</a>
+    <a class="carte-action" href="/livres">Gerer les livres</a>
+    <a class="carte-action" href="/emprunts">Gerer les emprunts</a>
+  </div>
+<% } else { %>
+  <section>
+    <div class="section-titre">
+      <h2>Mes derniers emprunts</h2>
+      <a href="/emprunts">Voir tout</a>
+    </div>
+    <% if (mesEmprunts.length > 0) { %>
+      <div class="liste-simple">
+        <% mesEmprunts.forEach((emprunt) => { %>
+          <article class="bloc-ligne">
+            <div>
+              <strong><%= emprunt.livre?.titre %></strong>
+              <p>Retour prevu : <%= emprunt.dateRetourPrevue %></p>
+            </div>
+            <span class="badge <%= emprunt.statut === 'retourne' ? 'badge-neutre' : 'badge-succes' %>"><%= emprunt.statut %></span>
+          </article>
+        <% }) %>
+      </div>
+    <% } else { %>
+      <p>Vous n'avez pas encore d'emprunt.</p>
+    <% } %>
+  </section>
+<% } %>
+
+<%- include('partials/pied') %>

@@ -66,9 +66,12 @@ Fichier Postman :
 
 - `collection-postman-bibliotheque.json`
 
-Schémas :
+Schemas :
 
 - `documentation/modele-donnees.md`
 - `documentation/modele-physique.sql`
 
-Il faut remplir aussi `soumission/infos-soumission.txt`.
+Soumission :
+
+- `soumission/Projet2_IFM30-3.zip`
+- `soumission/infos-soumission.txt`

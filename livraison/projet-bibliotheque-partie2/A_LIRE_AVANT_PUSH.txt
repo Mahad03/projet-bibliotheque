@@ -1,0 +1,7 @@
+﻿Projet prepare pour un depot GitHub separe pour la partie 2.
+
+Etapes conseillees :
+1. Creer un nouveau depot GitHub vide pour le frontend / partie 2.
+2. Copier ce dossier dedans ou faire un git init.
+3. Faire les commits et branches reelles des membres.
+4. Ajouter Sofiane et le professeur comme collaborateurs.

@@ -9,11 +9,9 @@
 
 2) Noms des membres du groupe
 - Mahad Mouhoumed
-- Sofiane Bouyoucef
 
 3) Tables developpees par chacun des membres
 - Mahad Mouhoumed : roles, utilisateurs, emprunts
-- Sofiane Bouyoucef : auteurs, categories, livres
 
 4) Lien GitHub
 - https://github.com/Mahad03/projet-bibliotheque

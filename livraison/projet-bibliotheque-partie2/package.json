@@ -1,0 +1,39 @@
+{
+  "name": "bibliotheque-francaise",
+  "version": "1.0.0",
+  "description": "Projet de conception web de bibliotheque avec API Node.js et interface EJS.",
+  "main": "serveur.js",
+  "scripts": {
+    "demarrer": "node serveur.js",
+    "developpement": "nodemon serveur.js",
+    "verifier-api": "node scripts/tester-api-bibliotheque.js",
+    "regenerer-soumission": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/mettre-a-jour-soumission.ps1"
+  },
+  "keywords": [
+    "express",
+    "sequelize",
+    "mysql",
+    "jwt",
+    "ejs",
+    "postman"
+  ],
+  "author": "Lemah",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "ejs": "^5.0.2",
+    "express": "^5.2.1",
+    "express-validator": "^7.3.1",
+    "jsonwebtoken": "^9.0.3",
+    "multer": "^2.1.1",
+    "mysql2": "^3.20.0",
+    "sequelize": "^6.37.8"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
