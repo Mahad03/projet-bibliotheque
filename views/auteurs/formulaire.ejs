@@ -1,0 +1,26 @@
+<%- include('../partials/entete', { titre, pageActive }) %>
+
+<form class="carte-formulaire" action="<%= mode === 'creation' ? '/auteurs/nouveau' : '/auteurs/' + donnees.id + '/modifier' %>" method="post" enctype="multipart/form-data">
+  <h1><%= mode === 'creation' ? 'Nouvel auteur' : 'Modifier un auteur' %></h1>
+  <label>Nom</label>
+  <input type="text" name="nom" value="<%= donnees.nom || '' %>" />
+  <% if (erreurs.nom) { %><p class="erreur-champ"><%= erreurs.nom %></p><% } %>
+
+  <label>Prenom</label>
+  <input type="text" name="prenom" value="<%= donnees.prenom || '' %>" />
+
+  <label>Biographie</label>
+  <textarea name="biographie" rows="5"><%= donnees.biographie || '' %></textarea>
+
+  <label>Image</label>
+  <input type="file" name="image" accept="image/*" />
+  <% if (erreurs.image) { %><p class="erreur-champ"><%= erreurs.image %></p><% } %>
+  <% if (donnees.image) { %><img class="apercu-image" src="<%= donnees.image %>" alt="Image actuelle" /><% } %>
+
+  <div class="actions-ligne">
+    <button class="bouton" type="submit">Enregistrer</button>
+    <a class="bouton bouton-secondaire" href="/auteurs">Annuler</a>
+  </div>
+</form>
+
+<%- include('../partials/pied') %>

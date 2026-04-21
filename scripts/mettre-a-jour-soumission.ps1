@@ -1,6 +1,7 @@
 param(
     [string]$NomProjet = "Projet1_IFM30-3",
     [string]$NomArchive = "Projet1_IFM30-3.zip",
+    [string]$TitreSoumission = "Projet 1 - IFM30 - 3",
     [string]$LienGithub = "",
     [string[]]$Membres = @(),
     [string[]]$RepartitionTables = @()
@@ -25,20 +26,22 @@ New-Item -ItemType Directory -Path $dossierProjet -Force | Out-Null
 $elementsProjet = @(
     "configuration",
     "controleurs",
+    "controleursPages",
     "documentation",
     "intergiciels",
     "modeles",
+    "public",
     "routes",
     "utilitaires",
     "validations",
+    "views",
     ".env.example",
     ".gitignore",
-    "README.md",
-    "LIS_MOI.md",
+    "presentation-projet.md",
     "package.json",
     "package-lock.json",
     "serveur.js",
-    "collection_postman.json"
+    "collection-postman-bibliotheque.json"
 )
 
 foreach ($element in $elementsProjet) {
@@ -50,18 +53,19 @@ foreach ($element in $elementsProjet) {
     }
 }
 
-Copy-Item -LiteralPath (Join-Path $racine "collection_postman.json") -Destination (Join-Path $dossierTemporaire "Bibliotheque_API.postman_collection.json") -Force
+Copy-Item -LiteralPath (Join-Path $racine "collection-postman-bibliotheque.json") -Destination (Join-Path $dossierTemporaire "collection-postman-bibliotheque.json") -Force
 Copy-Item -LiteralPath (Join-Path $dossierSoumission "modele-entite-association.pdf") -Destination (Join-Path $dossierTemporaire "modele-entite-association.pdf") -Force
 Copy-Item -LiteralPath (Join-Path $dossierSoumission "modele-physique.pdf") -Destination (Join-Path $dossierTemporaire "modele-physique.pdf") -Force
 
 $contenuInfos = @()
-$contenuInfos += "Projet 1 - IFM30 - 3"
+$contenuInfos += $TitreSoumission
 $contenuInfos += ""
 $contenuInfos += "1) Contenu du fichier zip"
 $contenuInfos += "- projet sans le dossier node_modules"
 $contenuInfos += "- schema du modele entite-association en PDF"
 $contenuInfos += "- schema du modele physique en PDF"
 $contenuInfos += "- fichier Postman"
+$contenuInfos += "- interface EJS et fichiers frontend"
 $contenuInfos += ""
 $contenuInfos += "2) Noms des membres du groupe"
 

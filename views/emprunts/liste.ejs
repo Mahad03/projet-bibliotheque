@@ -1,0 +1,58 @@
+<%- include('../partials/entete', { titre, pageActive }) %>
+
+<section class="section-titre">
+  <h1>Emprunts</h1>
+  <a class="bouton" href="/emprunts/nouveau">Nouvel emprunt</a>
+</section>
+
+<form class="barre-filtres" method="get" action="/emprunts">
+  <select name="statut">
+    <option value="">Tous les statuts</option>
+    <option value="en_cours" <%= filtreStatut === 'en_cours' ? 'selected' : '' %>>En cours</option>
+    <option value="retourne" <%= filtreStatut === 'retourne' ? 'selected' : '' %>>Retourne</option>
+  </select>
+  <button class="bouton bouton-secondaire" type="submit">Filtrer</button>
+</form>
+
+<div class="tableau-responsive">
+  <table class="tableau">
+    <thead>
+      <tr>
+        <% if (estAdministrateur) { %><th>Utilisateur</th><% } %>
+        <th>Livre</th>
+        <th>Date emprunt</th>
+        <th>Retour prevu</th>
+        <th>Retour effectif</th>
+        <th>Statut</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% emprunts.forEach((emprunt) => { %>
+        <tr>
+          <% if (estAdministrateur) { %><td><%= emprunt.utilisateur?.nomComplet %></td><% } %>
+          <td><%= emprunt.livre?.titre %></td>
+          <td><%= emprunt.dateEmprunt %></td>
+          <td><%= emprunt.dateRetourPrevue %></td>
+          <td><%= emprunt.dateRetourEffective || '-' %></td>
+          <td><span class="badge <%= emprunt.statut === 'retourne' ? 'badge-neutre' : 'badge-succes' %>"><%= emprunt.statut %></span></td>
+          <td class="actions-cellule">
+            <% if (emprunt.statut === 'en_cours') { %>
+              <form action="/emprunts/<%= emprunt.id %>/retourner" method="post">
+                <button class="lien-action" type="submit">Retourner</button>
+              </form>
+            <% } %>
+            <% if (estAdministrateur) { %>
+              <a class="lien-action" href="/emprunts/<%= emprunt.id %>/modifier">Modifier</a>
+              <form action="/emprunts/<%= emprunt.id %>/supprimer" method="post">
+                <button class="lien-action danger" type="submit">Supprimer</button>
+              </form>
+            <% } %>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+
+<%- include('../partials/pied') %>

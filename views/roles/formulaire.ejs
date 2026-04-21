@@ -1,0 +1,18 @@
+<%- include('../partials/entete', { titre, pageActive }) %>
+
+<form class="carte-formulaire" action="<%= mode === 'creation' ? '/roles/nouveau' : '/roles/' + donnees.id + '/modifier' %>" method="post">
+  <h1><%= mode === 'creation' ? 'Nouveau role' : 'Modifier un role' %></h1>
+  <label>Nom du role</label>
+  <input type="text" name="nom" value="<%= donnees.nom || '' %>" />
+  <% if (erreurs.nom) { %><p class="erreur-champ"><%= erreurs.nom %></p><% } %>
+
+  <label>Description</label>
+  <textarea name="description" rows="4"><%= donnees.description || '' %></textarea>
+
+  <div class="actions-ligne">
+    <button class="bouton" type="submit">Enregistrer</button>
+    <a class="bouton bouton-secondaire" href="/roles">Annuler</a>
+  </div>
+</form>
+
+<%- include('../partials/pied') %>

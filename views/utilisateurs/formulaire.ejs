@@ -1,0 +1,38 @@
+<%- include('../partials/entete', { titre, pageActive }) %>
+
+<form class="carte-formulaire" action="<%= mode === 'creation' ? '/utilisateurs/nouveau' : '/utilisateurs/' + donnees.id + '/modifier' %>" method="post">
+  <h1><%= mode === 'creation' ? 'Nouvel utilisateur' : 'Modifier un utilisateur' %></h1>
+
+  <label>Nom complet</label>
+  <input type="text" name="nomComplet" value="<%= donnees.nomComplet || '' %>" />
+  <% if (erreurs.nomComplet) { %><p class="erreur-champ"><%= erreurs.nomComplet %></p><% } %>
+
+  <label>Email</label>
+  <input type="email" name="email" value="<%= donnees.email || '' %>" />
+  <% if (erreurs.email) { %><p class="erreur-champ"><%= erreurs.email %></p><% } %>
+
+  <label><%= mode === 'creation' ? 'Mot de passe' : 'Nouveau mot de passe (optionnel)' %></label>
+  <input type="password" name="motDePasse" />
+  <% if (erreurs.motDePasse) { %><p class="erreur-champ"><%= erreurs.motDePasse %></p><% } %>
+
+  <label>Role</label>
+  <select name="roleId">
+    <option value="">Choisir un role</option>
+    <% roles.forEach((role) => { %>
+      <option value="<%= role.id %>" <%= String(donnees.roleId) === String(role.id) ? 'selected' : '' %>><%= role.nom %></option>
+    <% }) %>
+  </select>
+  <% if (erreurs.roleId) { %><p class="erreur-champ"><%= erreurs.roleId %></p><% } %>
+
+  <label class="case">
+    <input type="checkbox" name="actif" <%= donnees.actif ? 'checked' : '' %> />
+    Compte actif
+  </label>
+
+  <div class="actions-ligne">
+    <button class="bouton" type="submit">Enregistrer</button>
+    <a class="bouton bouton-secondaire" href="/utilisateurs">Annuler</a>
+  </div>
+</form>
+
+<%- include('../partials/pied') %>

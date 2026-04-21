@@ -1,0 +1,22 @@
+<%- include('../partials/entete', { titre, pageActive }) %>
+
+<section class="formulaire-centre">
+  <form class="carte-formulaire" action="/inscription" method="post">
+    <h1>Inscription</h1>
+    <label>Nom complet</label>
+    <input type="text" name="nomComplet" value="<%= donnees.nomComplet %>" />
+    <% if (erreurs.nomComplet) { %><p class="erreur-champ"><%= erreurs.nomComplet %></p><% } %>
+
+    <label>Email</label>
+    <input type="email" name="email" value="<%= donnees.email %>" />
+    <% if (erreurs.email) { %><p class="erreur-champ"><%= erreurs.email %></p><% } %>
+
+    <label>Mot de passe</label>
+    <input type="password" name="motDePasse" />
+    <% if (erreurs.motDePasse) { %><p class="erreur-champ"><%= erreurs.motDePasse %></p><% } %>
+
+    <button class="bouton" type="submit">Creer mon compte</button>
+  </form>
+</section>
+
+<%- include('../partials/pied') %>

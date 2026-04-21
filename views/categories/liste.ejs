@@ -1,0 +1,29 @@
+<%- include('../partials/entete', { titre, pageActive }) %>
+
+<section class="section-titre">
+  <h1>Categories</h1>
+  <% if (utilisateurConnecte && utilisateurConnecte.role.nom === 'administrateur') { %>
+    <a class="bouton" href="/categories/nouvelle">Nouvelle categorie</a>
+  <% } %>
+</section>
+
+<div class="grille-cartes">
+  <% categories.forEach((categorie) => { %>
+    <article class="carte">
+      <% if (categorie.image) { %><img class="carte-image" src="<%= categorie.image %>" alt="Image de la categorie" /><% } %>
+      <h3><%= categorie.nom %></h3>
+      <p><%= categorie.description || 'Aucune description.' %></p>
+      <p><strong>Livres :</strong> <%= categorie.livres.length %></p>
+      <% if (utilisateurConnecte && utilisateurConnecte.role.nom === 'administrateur') { %>
+        <div class="actions-ligne">
+          <a class="lien-action" href="/categories/<%= categorie.id %>/modifier">Modifier</a>
+          <form action="/categories/<%= categorie.id %>/supprimer" method="post">
+            <button class="lien-action danger" type="submit">Supprimer</button>
+          </form>
+        </div>
+      <% } %>
+    </article>
+  <% }) %>
+</div>
+
+<%- include('../partials/pied') %>
